@@ -1,0 +1,45 @@
+name: "vitpose_ensemble"
+platform: "ensemble"
+max_batch_size: 8  # 또는 필요에 따라 조정
+input [
+  {
+    name: "input"
+    data_type: TYPE_FP32
+    dims: [-1, 3, 256, 192 ]
+  }
+]
+output [
+  {
+    name: "post_output"
+    data_type: TYPE_FP32
+    dims: [-1, 17, 3 ]
+  }
+]
+ensemble_scheduling {
+  step [
+    {
+      model_name: "vitpose"
+      model_version: 1
+      input_map {
+        key: "input"
+        value: "input"
+      }
+      output_map {
+        key: "output"
+        value: "vitpose_output"
+      }
+    },
+    {
+      model_name: "postprocess"
+      model_version: 1
+      input_map {
+        key: "post_input"
+        value: "vitpose_output"
+      }
+      output_map {
+        key: "post_output"
+        value: "post_output"
+      }
+    }
+  ]
+}
