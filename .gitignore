@@ -4,9 +4,9 @@
 # tensorrt weight
 *.plan
 
-!ensemble/*
-!postprocess/*
-!vitpose/1/
+!pose_model_zoo/vitpose_ensemble/*
+!pose_model_zoo/postprocess/*
+!pose_model_zoo/vitpose/1/
 
 ### Python ###
 # Byte-compiled / optimized / DLL files
