@@ -1,6 +1,5 @@
 name: "vitpose_ensemble"
 platform: "ensemble"
-max_batch_size: 8  # 또는 필요에 따라 조정
 input [
   {
     name: "input"

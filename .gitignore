@@ -3,7 +3,7 @@
 
 # tensorrt weight
 *.plan
-
+*.onnx
 !pose_model_zoo/vitpose_ensemble/*
 !pose_model_zoo/postprocess/*
 !pose_model_zoo/vitpose/1/
