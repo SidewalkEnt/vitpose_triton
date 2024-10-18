@@ -205,7 +205,7 @@ def transform_preds(coords, center, scale, output_size, use_udp=False):
     Returns:
         np.ndarray: Predicted coordinates in the images.
     """
-    print(center)
+    # print(center)
     assert coords.shape[1] in (2, 4, 5)
     assert len(center) == 2
     assert len(scale) == 2
