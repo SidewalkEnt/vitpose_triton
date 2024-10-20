@@ -34,7 +34,7 @@ import (
 	connect "connectrpc.com/connect"
 	context "context"
 	errors "errors"
-	gen "github.com/juwon8891-sidewalk/grpc_test/gen"
+	gen "grpc_test/gen"
 	http "net/http"
 	strings "strings"
 )

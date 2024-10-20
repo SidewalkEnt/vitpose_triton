@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: triton-vitpose-deployment
+  namespace: default
+  labels:
+    app: triton-vitpose
+spec:
+  replicas: 10
+  selector:
+    matchLabels:
+      app: triton-vitpose
+  template:
+    metadata:
+      labels:
+        app: triton-vitpose
+    spec:
+      containers:
+        - name: triton-vitpose
+          image: asia-northeast3-docker.pkg.dev/stepin-dev-377209/app/triton_vitpose:test-1
+          ports:
+            - name: http
+              containerPort: 8000
+            - name: grpc
+              containerPort: 8001
+            - name: metrics
+              containerPort: 8002
+          resources:
+            limits:
+              nvidia.com/gpu: '1'
+          imagePullPolicy: IfNotPresent
+      nodeSelector:
+        cloud.google.com/gke-gpu-sharing-strategy: time-sharing
+        cloud.google.com/gke-max-shared-clients-per-gpu: '48'
+      tolerations:
+        - key: "nvidia.com/gpu"
+          operator: "Equal"
+          value: "present"
+          effect: "NoSchedule"

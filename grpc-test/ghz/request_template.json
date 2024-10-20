@@ -1,0 +1,13 @@
+{
+	"model_name": "vitpose_ensemble",
+	"inputs": [
+	  {
+		"name": "input",
+		"datatype": "FP32",
+		"shape": [1, 3, 192, 256],
+		"contents": {
+		  "fp32_contents": {{ .input_data | toJson }}
+		}
+	  }
+	]
+  }
