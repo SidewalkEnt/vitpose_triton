@@ -1,0 +1,27 @@
+version: '3.8'
+
+services:
+  aggregator:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aggregator
+    environment:
+      - APP_TYPE=aggregator
+      - TOTAL_REQUESTS=1280
+    ports:
+      - "8080:8080"
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - APP_TYPE=client
+      - CLIENT_ID=${CLIENT_ID}
+      - TEST_DURATION=10
+    depends_on:
+      - aggregator
+    deploy:
+      mode: replicated
+      replicas: 128

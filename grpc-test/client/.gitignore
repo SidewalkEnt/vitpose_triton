@@ -1,0 +1,21 @@
+#VSCode
+/.vscode
+src/.vscode
+src/c++/.vscode
+src/python/.vscode
+
+#C++
+/build
+*.so
+src/c++/perf_analyzer/builddir/
+src/c++/perf_analyzer/.vscode/
+
+#Python
+__pycache__/
+*.pyc
+
+#Other
+node_modules
+
+#GenAI-Perf Artifacts
+artifacts/
