@@ -4,6 +4,23 @@ services:
     build: .
     environment:
       - NODE_ENV=test
+      - REPLICA_ID={{.Task.Slot}}
+      - SERVICE_TYPE=client
     deploy:
       mode: replicated
-      replicas: 32
+      replicas: 128
+      resources:
+        limits:
+          cpus: '0.1'
+          memory: 256M
+        reservations:
+          cpus: '0.1'
+          memory: 128M
+  
+  central-server:
+    build: .
+    environment:
+      - SERVICE_TYPE=central
+      - EXPECTED_REPLICAS=128
+    ports:
+      - "3000:3000"

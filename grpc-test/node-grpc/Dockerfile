@@ -9,4 +9,8 @@ RUN npm install
 COPY src ./src
 COPY protobuf ./protobuf
 
-CMD ["npx", "ts-node", "src/grpc_client.ts"]
+# 시작 스크립트 추가
+COPY start.sh ./
+RUN chmod +x start.sh
+
+CMD ["./start.sh"]

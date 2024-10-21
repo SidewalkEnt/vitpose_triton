@@ -1,6 +1,7 @@
 import * as grpc from '@grpc/grpc-js';
 import * as protoLoader from '@grpc/proto-loader';
 import * as path from 'path';
+import axios from 'axios';
 
 const PROTO_PATH = path.resolve(__dirname, '../protobuf/grpc_service.proto');
 
@@ -68,29 +69,38 @@ function makeGrpcCall(client: grpc.Client, request: ModelInferRequest): Promise<
 async function simulateUser(client: grpc.Client) {
     const totalDuration = 20; // 총 실행 시간 (초)
     const startTime = Date.now();
-    let totalLatency = 0;
-    let requestCount = 0;
+    const latencies: number[] = [];
 
     while ((Date.now() - startTime) / 1000 < totalDuration) {
         const request = createModelInferRequest();
         try {
             const { response, latency } = await makeGrpcCall(client, request);
-            console.log(`요청 완료. 지연 시간: ${latency.toFixed(2)}ms`);
-            totalLatency += latency;
-            requestCount++;
+            // console.log(`요청 완료. 지연 시간: ${latency.toFixed(2)}ms`);
+            latencies.push(latency);
         } catch (error) {
             const grpcError = error as GrpcError;
             console.error(`오류 발생. 지연 시간: ${grpcError.latency.toFixed(2)}ms`, grpcError.error);
-            totalLatency += grpcError.latency;
-            requestCount++;
+            latencies.push(grpcError.latency);
         }
         await new Promise(resolve => setTimeout(resolve, 1000)); // 1초 대기
     }
 
-    const averageLatency = totalLatency / requestCount;
-    console.log(`20초 동안의 시뮬레이션이 완료되었습니다.`);
-    console.log(`평균 지연 시간: ${averageLatency.toFixed(2)}ms`);
-    console.log(`총 요청 수: ${requestCount}`);
+    const sortedLatencies = latencies.sort((a, b) => a - b);
+    const averageLatency = sortedLatencies.reduce((a, b) => a + b, 0) / sortedLatencies.length;
+    const p50 = sortedLatencies[Math.floor(sortedLatencies.length * 0.5)];
+    const p95 = sortedLatencies[Math.floor(sortedLatencies.length * 0.95)];
+
+    // 결과를 중앙 서버로 전송
+    try {
+        const response = await axios.post('http://central-server:3000/report', {
+            averageLatency,
+            p50,
+            p95
+        });
+        // console.log('결과를 중앙 서버로 전송했습니다. 서버 응답:', response.data);
+    } catch (error) {
+        console.error('중앙 서버로 결과 전송 실패:', error);
+    }
 }
 
 async function main() {
