@@ -49,7 +49,7 @@ function calculateFinalStats() {
         overallAverage,
         overallP50,
         overallP95,
-        replicaResults: results
+        // replicaResults: results
     };
 
     console.log('최종 통계:', stats);
