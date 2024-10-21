@@ -1,7 +1,7 @@
 package main
 
 import (
-	"grpc_test/gen" // 실제 프로젝트의 경로에 맞게 수정해주세요
+	"grpc_test/gen"
 	"math/rand"
 	"os"
 
@@ -9,7 +9,7 @@ import (
 )
 
 const (
-	batchSize   = 1 // 명시적 배치 크기 추가
+	batchSize   = 1
 	imageHeight = 256
 	imageWidth  = 192
 	modelName   = "vitpose_ensemble"
@@ -22,12 +22,12 @@ func createModelInferRequest() *gen.ModelInferRequest {
 			{
 				Name:     "input",
 				Datatype: "FP32",
-				Shape:    []int64{batchSize, 3, int64(imageHeight), int64(imageWidth)}, // 수정됨
+				Shape:    []int64{batchSize, 3, int64(imageHeight), int64(imageWidth)},
 			},
 		},
 	}
 
-	data := make([]float32, batchSize*3*imageHeight*imageWidth) // 수정됨
+	data := make([]float32, batchSize*3*imageHeight*imageWidth)
 	for i := range data {
 		data[i] = rand.Float32()
 	}

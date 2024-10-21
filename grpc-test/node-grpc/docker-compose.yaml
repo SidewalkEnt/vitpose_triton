@@ -1,0 +1,9 @@
+version: '3'
+services:
+  grpc-client:
+    build: .
+    environment:
+      - NODE_ENV=test
+    deploy:
+      mode: replicated
+      replicas: 32
