@@ -6,7 +6,7 @@ metadata:
   labels:
     app: triton-vitpose
 spec:
-  replicas: 10
+  replicas: 1
   selector:
     matchLabels:
       app: triton-vitpose
@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
         - name: triton-vitpose
-          image: asia-northeast3-docker.pkg.dev/stepin-dev-377209/app/triton_vitpose:test-1
+          image: asia-northeast3-docker.pkg.dev/stepin-dev-377209/app/triton_vitpose:test-l4
           ports:
             - name: http
               containerPort: 8000
@@ -28,6 +28,9 @@ spec:
           resources:
             limits:
               nvidia.com/gpu: '1'
+            requests:
+              cpu: "1000m"  # 1 CPU
+              memory: "2Gi"  # 2 GiB of memory
           imagePullPolicy: IfNotPresent
       nodeSelector:
         cloud.google.com/gke-gpu-sharing-strategy: time-sharing
